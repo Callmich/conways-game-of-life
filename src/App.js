@@ -3,7 +3,7 @@ import produce from "immer";
 
 let rowNumber = 25
 let colNumber = 25
-let cell = {alive: 1, clickable: true, id : null}
+let cell = {alive: 0, clickable: true, id : null}
 
 
 
@@ -15,10 +15,6 @@ const blankGrid = () => {
   for(let i = 0; i < rowNumber; i++){
     rows.push(Array.from(Array(colNumber), () => cell))
   }
-  rows.forEach(element => {
-    cellCounter ++ 
-    cell.id = cellCounter
-  });
   return rows
 }
 
@@ -49,9 +45,15 @@ function App() {
               onClick={() => {
                 if (!simOn) {
                   const newGrid = produce(grid, (copy) => {
-                    copy[i][m] = grid[i][m] ? cell.alive == 0 : cell.alive == 1;
+                    if(copy[i][m].alive == 0){
+                      copy[i][m].alive = 1
+                    }
+                    else{
+                      copy[i][m].alive = 0
+                    }
                   });
                   setGrid(newGrid);
+                  console.log(newGrid)
                 } else {
                   return null;
                 }
@@ -59,7 +61,7 @@ function App() {
               style={{
                 width: 30,
                 height: 30,
-                backgroundColor: grid[i][m] ? "black" : "red",
+                backgroundColor: grid[i][m].alive ? "red" : "black",
                 border: "dotted 1px white",
               }}
             ></div>
