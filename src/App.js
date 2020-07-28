@@ -3,14 +3,21 @@ import produce from "immer";
 
 let rowNumber = 25
 let colNumber = 25
-let cell = {alive: 0, clickable: true, id : null}
+let id = 0
+let cell = {alive: 0, clickable: true, id : id}
 
-
-
-
+const neighbors = [
+  [1,-1],
+  [1,0],
+  [1,1],
+  [-1,-1],
+  [-1,0],
+  [-1,1],
+  [0,-1],
+  [0,1],
+];
 
 const blankGrid = () => {
-  let cellCounter = 1
   const rows = []
   for(let i = 0; i < rowNumber; i++){
     rows.push(Array.from(Array(colNumber), () => cell))
@@ -20,12 +27,35 @@ const blankGrid = () => {
 
 console.log(blankGrid())
 
+const simulation = (oldGrid) => {
+  return produce(oldGrid, (copy) => {
+    for(let i = 0; i < rowNumber; i++){
+      for (let m = 0; m < colNumber; m++){
+        let simCount = 0
+        neighbors.forEach(([x,y]) => {
+          let newI = i + x
+          let newM = m + y
+          if (newI > 0 && newI < rowNumber && newM >= 0 && newM < colNumber){
+            console.log(oldGrid[newI][newM].alive)
+          }
+        })
+        if (simCount < 2 || simCount > 3){
+          copy[i][m].alive = 0
+        } 
+        else if(oldGrid[i][m].alive === 0 && simCount === 3){
+          copy[i][m].alive = 1
+        }
+      }
+    }
+  })
+}
+
 
 function App() {
   const [grid, setGrid] = useState(() => {
     return blankGrid()
   })
-  const [simOn, setSetOn] = useState(false);
+  const [simOn, setSimOn] = useState(false);
   return (
     <div>
       <div>
@@ -68,6 +98,19 @@ function App() {
           ))
         )}
       </div>
+      <button
+        onClick={() => {
+          setSimOn(true);
+          if (simOn == false){
+            simulation()
+          }
+          else{
+            simOn(false)
+          }
+        }}
+      >
+        Run Program
+      </button>
     </div>
   );
 }
