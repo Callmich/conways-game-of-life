@@ -175,6 +175,7 @@ function App() {
         )}
         <p>Generation: {genCounter}</p>
       </div>
+      
       <button
         onClick={() => {
           setSimOn(true);
@@ -187,6 +188,7 @@ function App() {
       >
         Run Program
       </button>
+
       <button
         onClick={() => {
           setSimOn(false);
@@ -194,6 +196,7 @@ function App() {
       >
         stop Program
       </button>
+
       <button
         onClick={() => {
           setFaster(true);
@@ -202,6 +205,7 @@ function App() {
       >
         LightSpeed
       </button>
+
       <button
         onClick={() => {
           setFaster(false);
