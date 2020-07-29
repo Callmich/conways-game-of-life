@@ -62,6 +62,8 @@ function App() {
   })
   const [simOn, setSimOn] = useState(false);
   const [faster, setFaster] = useState(false);
+  const [size, setSize] = useState({colNumber: 10, rowNumber: 10})
+  let cell = {alive: 0, id : id}
 
   const runningRef = useRef(simOn);
   runningRef.current = simOn;
@@ -81,8 +83,8 @@ function App() {
 
   const resizeGrid = () => {
     const rows = []
-    for(let i = 0; i < rowNumber; i++){
-      rows.push(Array.from(Array(colNumber), () => cell))
+    for(let i = 0; i < size.rowNumber; i++){
+      rows.push(Array.from(Array(size.colNumber), () => cell))
     }
     return rows
   }
@@ -169,6 +171,13 @@ function App() {
         }}
       >
         Clear
+      </button>
+      <button
+        onClick={() => {
+          setGrid(resizeGrid());
+        }}
+      >
+        Make Grid bigger
       </button>
       
     </div>
