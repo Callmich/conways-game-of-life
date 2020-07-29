@@ -37,17 +37,20 @@ function App() {
   const [grid, setGrid] = useState(() => {
     return blankGrid()
   })
-  const [changeGridSize, setChangeGridSize] = useState(false)
+  
   const [simOn, setSimOn] = useState(false);
   const [faster, setFaster] = useState(false);
-  const [size, setSize] = useState({colNumber: 10, rowNumber: 11})
+  const [size, setSize] = useState({rowNumber: 11, colNumber: 10})
+  const [changeGridSize, setChangeGridSize] = useState(false);
   let cell = {alive: 0, id : id}
 
   const runningRef = useRef(simOn);
   runningRef.current = simOn;
 
   const runIt = (oldGrid) => {
-    if(setChangeGridSize === false){
+    console.log("CGS",changeGridSize)
+    console.log("faster", faster)
+    if(!changeGridSize){
       console.log("og1", oldGrid)
       return produce(oldGrid, (copy) => {
         console.log(oldGrid)
@@ -61,18 +64,18 @@ function App() {
                 simCount += (oldGrid[newI][newM]).alive
               }
           })
-          console.log("simcount",i,m,simCount)
-          if(oldGrid[i][m].alive == 0 && simCount == 3){
-            copy[i][m].alive = 1
-          }else if(simCount < 2 || simCount > 3){
-            copy[i][m].alive = 0
-          }else{
-            copy[i][m] = oldGrid[i][m]
-          }
+            console.log("simcount!!!!!!",i,m,simCount)
+            if(oldGrid[i][m].alive == 0 && simCount == 3){
+              copy[i][m].alive = 1
+            }else if(simCount < 2 || simCount > 3){
+              copy[i][m].alive = 0
+            }else{
+              copy[i][m] = oldGrid[i][m]
+            }
         }
         }
       })
-    }else{
+    }else if (changeGridSize){
       console.log("og1", oldGrid)
       return produce(oldGrid, (copy) => {
         console.log(oldGrid)
@@ -132,6 +135,7 @@ function App() {
             <div
               key={`${k}-${e}`}
               onClick={() => {
+                console.log(changeGridSize)
                 if (!simOn) {
                   const newGrid = produce(grid, (copy) => {
                     if(copy[k][e].alive === 0){
@@ -180,6 +184,7 @@ function App() {
         onClick={() => {
           setFaster(true);
         }}
+        
       >
         LightSpeed
       </button>
@@ -204,8 +209,11 @@ function App() {
             rows.push(Array.from(Array(size.colNumber), () => cell))}
             console.log("R#", size.rowNumber, "C#", size.colNumber)
             console.log(rows)
+          console.log("before",changeGridSize)
+          setGrid(rows)
           setChangeGridSize(true)
-          setGrid(rows);
+          setFaster(true)
+          console.log("after",changeGridSize)
         }}
       >
         Make Grid bigger
