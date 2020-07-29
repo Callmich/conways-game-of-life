@@ -7,6 +7,7 @@ let colNumber = 25
 let id = 0
 let cell = {alive: 0, id : id}
 
+
 const neighbors = [
   [0, 1],
   [0, -1],
@@ -22,6 +23,14 @@ const blankGrid = () => {
   const rows = []
   for(let i = 0; i < rowNumber; i++){
     rows.push(Array.from(Array(colNumber), () => cell))
+  }
+  return rows
+}
+
+const randomGrid = () => {
+  const rows = []
+  for(let i = 0; i < rowNumber; i++){
+    rows.push(Array.from(Array(colNumber), () => ({alive: Math.round(Math.random())})))
   }
   return rows
 }
@@ -225,6 +234,15 @@ function App() {
         }}
       >
         Shrink to 10x10
+      </button>
+      <button
+        onClick={() => {
+          setChangeGridSize(false)
+          setFaster(!faster)
+          setGrid(randomGrid());
+        }}
+      >
+        Random Grid
       </button>
     </div>
   );
