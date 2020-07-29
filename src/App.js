@@ -28,35 +28,12 @@ const blankGrid = () => {
 
 console.log(blankGrid())
 
-const runIt = (oldGrid) => {
-  console.log("og1", oldGrid)
-  return produce(oldGrid, (copy) => {
-    console.log(oldGrid)
-    for(let i = 0; i < rowNumber; i++){
-      for (let m = 0; m < colNumber; m++){
-        let simCount = 0
-        neighbors.forEach(([x,y]) => {
-          const newI = i + x
-          const newM = m + y
-          if (newI >= 0 && newI < rowNumber && newM >= 0 && newM < colNumber){
-            simCount += (oldGrid[newI][newM]).alive
-          }
-        })
-        console.log("simcount",i,m,simCount)
-        if(oldGrid[i][m].alive == 0 && simCount == 3){
-          copy[i][m].alive = 1
-        }else if(simCount < 2 || simCount > 3){
-          copy[i][m].alive = 0
-        }else{
-          copy[i][m] = oldGrid[i][m]
-        }
-      }
-    }
-  })
-}
+
 
 
 function App() {
+  let rowNumber = 25
+  let colNumber = 25
   const [grid, setGrid] = useState(() => {
     return blankGrid()
   })
@@ -68,6 +45,60 @@ function App() {
 
   const runningRef = useRef(simOn);
   runningRef.current = simOn;
+
+  const runIt = (oldGrid) => {
+    if(setChangeGridSize === false){
+      console.log("og1", oldGrid)
+      return produce(oldGrid, (copy) => {
+        console.log(oldGrid)
+        for(let i = 0; i < rowNumber; i++){
+          for (let m = 0; m < colNumber; m++){
+            let simCount = 0
+            neighbors.forEach(([x,y]) => {
+              const newI = i + x
+              const newM = m + y
+              if (newI >= 0 && newI < rowNumber && newM >= 0 && newM < colNumber){
+                simCount += (oldGrid[newI][newM]).alive
+              }
+          })
+          console.log("simcount",i,m,simCount)
+          if(oldGrid[i][m].alive == 0 && simCount == 3){
+            copy[i][m].alive = 1
+          }else if(simCount < 2 || simCount > 3){
+            copy[i][m].alive = 0
+          }else{
+            copy[i][m] = oldGrid[i][m]
+          }
+        }
+        }
+      })
+    }else{
+      console.log("og1", oldGrid)
+      return produce(oldGrid, (copy) => {
+        console.log(oldGrid)
+        for(let i = 0; i < size.rowNumber; i++){
+          for (let m = 0; m < size.colNumber; m++){
+            let simCount = 0
+            neighbors.forEach(([x,y]) => {
+              const newI = i + x
+              const newM = m + y
+              if (newI >= 0 && newI < size.rowNumber && newM >= 0 && newM < size.colNumber){
+                simCount += (oldGrid[newI][newM]).alive
+              }
+            })
+            console.log("simcount",i,m,simCount)
+            if(oldGrid[i][m].alive == 0 && simCount == 3){
+              copy[i][m].alive = 1
+            }else if(simCount < 2 || simCount > 3){
+              copy[i][m].alive = 0
+            }else{
+              copy[i][m] = oldGrid[i][m]
+            }
+          }
+        }
+      })
+    }
+  }
 
   const runSimulation = useCallback(() => {
     console.log('running sim')
