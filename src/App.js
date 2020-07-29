@@ -180,6 +180,7 @@ function App() {
       </div>
 
       <button
+        class="buttons"
         onClick={() => {
           setSimOn(true);
           if (!simOn){
@@ -193,14 +194,16 @@ function App() {
       </button>
 
       <button
+        class="buttons"
         onClick={() => {
           setSimOn(false);
         }}
       >
-        stop Program
+        Stop Program
       </button>
 
       <button
+        class="buttons"
         onClick={() => {
           setFaster(true);
         }}
@@ -210,13 +213,16 @@ function App() {
       </button>
 
       <button
+        class="buttons"
         onClick={() => {
           setFaster(false);
         }}
       >
-        Slow it down
+        Slow It Down
       </button>
+
       <button
+        class="buttons"
         onClick={() => {
           setChangeGridSize(false)
           setFaster(!faster)
@@ -226,7 +232,9 @@ function App() {
       >
         Clear
       </button>
+
       <button
+        class="buttons"
         onClick={() => {
           const rows = []
           for(let i = 0; i < size.rowNumber; i++){
@@ -242,7 +250,9 @@ function App() {
       >
         Shrink to 10x10
       </button>
+
       <button
+      class="buttons"
         onClick={() => {
           setChangeGridSize(false)
           setFaster(!faster)
