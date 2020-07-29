@@ -36,4 +36,12 @@
     transform: rotate(360deg);
   }
 }
+.flex {
+  display: flex;
+  margin: 30px
+}
+.Rules {
+  margin: 40px;
+  border: dotted;
+}
 

@@ -1,5 +1,7 @@
 import React, {useState, useCallback, useRef} from 'react';
 import produce from "immer";
+import Rules from "./Rules";
+import './App.css'
 
 
 let rowNumber = 25
@@ -35,7 +37,7 @@ const randomGrid = () => {
   return rows
 }
 
-console.log(blankGrid())
+// console.log(blankGrid())
 
 
 
@@ -58,12 +60,12 @@ function App() {
   runningRef.current = simOn;
 
   const runIt = (oldGrid) => {
-    console.log("CGS",changeGridSize)
-    console.log("faster", faster)
+    // console.log("CGS",changeGridSize)
+    // console.log("faster", faster)
     if(!changeGridSize){
-      console.log("og1", oldGrid)
+      // console.log("og1", oldGrid)
       return produce(oldGrid, (copy) => {
-        console.log(oldGrid)
+        // console.log(oldGrid)
         for(let i = 0; i < rowNumber; i++){
           for (let m = 0; m < colNumber; m++){
             let simCount = 0
@@ -74,7 +76,7 @@ function App() {
                 simCount += (oldGrid[newI][newM]).alive
               }
           })
-            console.log("simcount!!!!!!",i,m,simCount)
+            // console.log("simcount!!!!!!",i,m,simCount)
             if(oldGrid[i][m].alive == 0 && simCount == 3){
               copy[i][m].alive = 1
             }else if(simCount < 2 || simCount > 3){
@@ -86,9 +88,9 @@ function App() {
         }
       })
     }else if (changeGridSize){
-      console.log("og1", oldGrid)
+      // console.log("og1", oldGrid)
       return produce(oldGrid, (copy) => {
-        console.log(oldGrid)
+        // console.log(oldGrid)
         for(let i = 0; i < size.rowNumber; i++){
           for (let m = 0; m < size.colNumber; m++){
             let simCount = 0
@@ -99,7 +101,7 @@ function App() {
                 simCount += (oldGrid[newI][newM]).alive
               }
             })
-            console.log("simcount",i,m,simCount)
+            // console.log("simcount",i,m,simCount)
             if(oldGrid[i][m].alive == 0 && simCount == 3){
               copy[i][m].alive = 1
             }else if(simCount < 2 || simCount > 3){
@@ -114,14 +116,14 @@ function App() {
   }
 
   const runSimulation = useCallback(() => {
-    console.log('running sim')
+    // console.log('running sim')
     if (!runningRef.current) {
       return;
     }
     setGrid((oldGrid) => {
       return runIt(oldGrid);
     });
-    console.log(genCounter)
+    // console.log(genCounter)
     count = count + 1
     setGenCounter(count)
 
@@ -131,6 +133,7 @@ function App() {
  
 
   return (
+    <div class="flex">
     <div>
       <div>
         <h1>Conway's Game of Life</h1>
@@ -148,7 +151,7 @@ function App() {
             <div
               key={`${k}-${e}`}
               onClick={() => {
-                console.log(changeGridSize)
+                // console.log(changeGridSize)
                 if (!simOn) {
                   const newGrid = produce(grid, (copy) => {
                     if(copy[k][e].alive === 0){
@@ -159,7 +162,7 @@ function App() {
                     }
                   });
                   setGrid(newGrid);
-                  console.log(newGrid)
+                  // console.log(newGrid)
                 } else {
                   return null;
                 }
@@ -175,7 +178,7 @@ function App() {
         )}
         <p>Generation: {genCounter}</p>
       </div>
-      
+
       <button
         onClick={() => {
           setSimOn(true);
@@ -228,13 +231,13 @@ function App() {
           const rows = []
           for(let i = 0; i < size.rowNumber; i++){
             rows.push(Array.from(Array(size.colNumber), () => cell))}
-            console.log("R#", size.rowNumber, "C#", size.colNumber)
-            console.log(rows)
-          console.log("before",changeGridSize)
+          //   console.log("R#", size.rowNumber, "C#", size.colNumber)
+          //   console.log(rows)
+          // console.log("before",changeGridSize)
           setGrid(rows)
           setChangeGridSize(true)
           setFaster(true)
-          console.log("after",changeGridSize)
+          // console.log("after",changeGridSize)
         }}
       >
         Shrink to 10x10
@@ -248,6 +251,10 @@ function App() {
       >
         Random Grid
       </button>
+    </div>
+    <div class="Rules">
+      <Rules />
+    </div>
     </div>
   );
 }
