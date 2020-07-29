@@ -105,9 +105,6 @@ function App() {
   }
 
   const runSimulation = useCallback(() => {
-    console.log(genCounter)
-    count = count + 1
-    setGenCounter(count)
     console.log('running sim')
     if (!runningRef.current) {
       return;
@@ -115,6 +112,9 @@ function App() {
     setGrid((oldGrid) => {
       return runIt(oldGrid);
     });
+    console.log(genCounter)
+    count = count + 1
+    setGenCounter(count)
 
     setTimeout(runSimulation, faster ? 300 : 1000);
   }, [faster]);
