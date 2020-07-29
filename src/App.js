@@ -40,7 +40,7 @@ function App() {
   
   const [simOn, setSimOn] = useState(false);
   const [faster, setFaster] = useState(false);
-  const [size, setSize] = useState({rowNumber: 11, colNumber: 10})
+  const [size, setSize] = useState({rowNumber: 10, colNumber: 10})
   const [changeGridSize, setChangeGridSize] = useState(false);
   let cell = {alive: 0, id : id}
 
@@ -197,7 +197,10 @@ function App() {
       </button>
       <button
         onClick={() => {
+          setChangeGridSize(false)
+          setFaster(!faster)
           setGrid(blankGrid());
+          
         }}
       >
         Clear
@@ -216,9 +219,8 @@ function App() {
           console.log("after",changeGridSize)
         }}
       >
-        Make Grid bigger
+        Shrink to 10x10
       </button>
-      
     </div>
   );
 }
