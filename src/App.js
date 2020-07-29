@@ -37,13 +37,14 @@ function App() {
   const [grid, setGrid] = useState(() => {
     return blankGrid()
   })
-  
+  let count = 0
   const [simOn, setSimOn] = useState(false);
   const [faster, setFaster] = useState(false);
   const [size, setSize] = useState({rowNumber: 10, colNumber: 10})
   const [changeGridSize, setChangeGridSize] = useState(false);
+  const [genCounter, setGenCounter] = useState(count)
   let cell = {alive: 0, id : id}
-
+  
   const runningRef = useRef(simOn);
   runningRef.current = simOn;
 
@@ -104,6 +105,9 @@ function App() {
   }
 
   const runSimulation = useCallback(() => {
+    console.log(genCounter)
+    count = count + 1
+    setGenCounter(count)
     console.log('running sim')
     if (!runningRef.current) {
       return;
@@ -160,6 +164,7 @@ function App() {
             ></div>
           ))
         )}
+        <p>Generation: {genCounter}</p>
       </div>
       <button
         onClick={() => {
