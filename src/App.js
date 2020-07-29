@@ -60,9 +60,10 @@ function App() {
   const [grid, setGrid] = useState(() => {
     return blankGrid()
   })
+  const [changeGridSize, setChangeGridSize] = useState(false)
   const [simOn, setSimOn] = useState(false);
   const [faster, setFaster] = useState(false);
-  const [size, setSize] = useState({colNumber: 10, rowNumber: 10})
+  const [size, setSize] = useState({colNumber: 10, rowNumber: 11})
   let cell = {alive: 0, id : id}
 
   const runningRef = useRef(simOn);
@@ -79,15 +80,7 @@ function App() {
 
     setTimeout(runSimulation, faster ? 300 : 1000);
   }, [faster]);
- 
 
-  const resizeGrid = () => {
-    const rows = []
-    for(let i = 0; i < size.rowNumber; i++){
-      rows.push(Array.from(Array(size.colNumber), () => cell))
-    }
-    return rows
-  }
  
 
   return (
@@ -97,23 +90,24 @@ function App() {
       </div>
       <div
         className="grid"
-        style={{
+        style={!changeGridSize ? {
           display: "grid",
           gridTemplateColumns: `repeat(${colNumber},30px)`,
-        }}
+        } : {display: "grid",
+        gridTemplateColumns: `repeat(${size.colNumber},30px)`,}}
       >
-        {grid.map((rows, i) =>
-          rows.map((columns, m) => (
+        {grid.map((rows, k) =>
+          rows.map((columns, e) => (
             <div
-              key={`${i}-${m}`}
+              key={`${k}-${e}`}
               onClick={() => {
                 if (!simOn) {
                   const newGrid = produce(grid, (copy) => {
-                    if(copy[i][m].alive === 0){
-                      copy[i][m].alive = 1
+                    if(copy[k][e].alive === 0){
+                      copy[k][e].alive = 1
                     }
                     else{
-                      copy[i][m].alive = 0
+                      copy[k][e].alive = 0
                     }
                   });
                   setGrid(newGrid);
@@ -125,7 +119,7 @@ function App() {
               style={{
                 width: 30,
                 height: 30,
-                backgroundColor: grid[i][m].alive ? "red" : "black",
+                backgroundColor: grid[k][e].alive ? "red" : "black",
                 border: "dotted 1px white",
               }}
             ></div>
@@ -174,7 +168,13 @@ function App() {
       </button>
       <button
         onClick={() => {
-          setGrid(resizeGrid());
+          const rows = []
+          for(let i = 0; i < size.rowNumber; i++){
+            rows.push(Array.from(Array(size.colNumber), () => cell))}
+            console.log("R#", size.rowNumber, "C#", size.colNumber)
+            console.log(rows)
+          setChangeGridSize(true)
+          setGrid(rows);
         }}
       >
         Make Grid bigger
