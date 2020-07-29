@@ -1,20 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import produce from "immer";
+
 
 let rowNumber = 25
 let colNumber = 25
 let id = 0
-let cell = {alive: 0, clickable: true, id : id}
+let cell = {alive: 0, id : id}
 
 const neighbors = [
-  [1,-1],
-  [1,0],
-  [1,1],
-  [-1,-1],
-  [-1,0],
-  [-1,1],
-  [0,-1],
-  [0,1],
+  [0, 1],
+  [0, -1],
+  [1, -1],
+  [-1, 1],
+  [1, 1],
+  [-1, -1],
+  [1, 0],
+  [-1, 0],
 ];
 
 const blankGrid = () => {
@@ -27,23 +28,27 @@ const blankGrid = () => {
 
 console.log(blankGrid())
 
-const simulation = (oldGrid) => {
+const runIt = (oldGrid) => {
+  console.log("og1", oldGrid)
   return produce(oldGrid, (copy) => {
+    console.log(oldGrid)
     for(let i = 0; i < rowNumber; i++){
       for (let m = 0; m < colNumber; m++){
         let simCount = 0
         neighbors.forEach(([x,y]) => {
-          let newI = i + x
-          let newM = m + y
-          if (newI > 0 && newI < rowNumber && newM >= 0 && newM < colNumber){
-            console.log(oldGrid[newI][newM].alive)
+          const newI = i + x
+          const newM = m + y
+          if (newI >= 0 && newI < rowNumber && newM >= 0 && newM < colNumber){
+            simCount += (oldGrid[newI][newM]).alive
           }
         })
-        if (simCount < 2 || simCount > 3){
-          copy[i][m].alive = 0
-        } 
-        else if(oldGrid[i][m].alive === 0 && simCount === 3){
+        console.log("simcount",i,m,simCount)
+        if(oldGrid[i][m].alive == 0 && simCount == 3){
           copy[i][m].alive = 1
+        }else if(simCount < 2 || simCount > 3){
+          copy[i][m].alive = 0
+        }else{
+          copy[i][m] = oldGrid[i][m]
         }
       }
     }
@@ -56,6 +61,33 @@ function App() {
     return blankGrid()
   })
   const [simOn, setSimOn] = useState(false);
+  const [faster, setFaster] = useState(false);
+
+  const runningRef = useRef(simOn);
+  runningRef.current = simOn;
+
+  const runSimulation = useCallback(() => {
+    console.log('running sim')
+    if (!runningRef.current) {
+      return;
+    }
+    setGrid((oldGrid) => {
+      return runIt(oldGrid);
+    });
+
+    setTimeout(runSimulation, faster ? 300 : 1000);
+  }, [faster]);
+ 
+
+  const resizeGrid = () => {
+    const rows = []
+    for(let i = 0; i < rowNumber; i++){
+      rows.push(Array.from(Array(colNumber), () => cell))
+    }
+    return rows
+  }
+ 
+
   return (
     <div>
       <div>
@@ -75,7 +107,7 @@ function App() {
               onClick={() => {
                 if (!simOn) {
                   const newGrid = produce(grid, (copy) => {
-                    if(copy[i][m].alive == 0){
+                    if(copy[i][m].alive === 0){
                       copy[i][m].alive = 1
                     }
                     else{
@@ -101,18 +133,48 @@ function App() {
       <button
         onClick={() => {
           setSimOn(true);
-          if (simOn == false){
-            simulation()
+          if (!simOn){
+            runningRef.current = true
+            runSimulation()
           }
-          else{
-            simOn(false)
-          }
+          
         }}
       >
         Run Program
       </button>
+      <button
+        onClick={() => {
+          setSimOn(false);
+        }}
+      >
+        stop Program
+      </button>
+      <button
+        onClick={() => {
+          setFaster(true);
+        }}
+      >
+        LightSpeed
+      </button>
+      <button
+        onClick={() => {
+          setFaster(false);
+        }}
+      >
+        Slow it down
+      </button>
+      <button
+        onClick={() => {
+          setGrid(blankGrid());
+        }}
+      >
+        Clear
+      </button>
+      
     </div>
   );
 }
 
 export default App;
+
+
