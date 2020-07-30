@@ -8,7 +8,7 @@ export default function Rules(){
         <div>
             <div>
                 <h1>Rules For Conway's Game Of life</h1>
-                <h3>When live (red cells) are on the page and the game is run those cells will follow the below
+                <h3>When live (red cells) are on the page and the game is run - those cells will follow the below
                     <br/> rules and repeat over and over until there are no cells or the rules will allow no other changes.</h3>
                 <h4>1. Any live cell with two or three live neighbours survives</h4>
                 <h4>2. Any dead cell with three live neighbours becomes a live cell</h4>
@@ -21,7 +21,7 @@ export default function Rules(){
                 <h4>-While the game is not playing you can click on the black cells to turn them alive</h4>
                 <h4>-After setting a patern you like click the Run Program button</h4>
                 <h4>-Click the Stop Program button to stop the growth algorithm</h4>
-                <h4>-While the game is stopped you can speed up or slow down the pace with the Lightspeed and Slow It Down buttons.</h4>
+                <h4>-While the game is stopped you can choose between two speeds with the Lightspeed and Slow It Down buttons.</h4>
                 <h4>-To reset the grid to a blank 25x25 grid click the Clear button</h4>
                 <h4>-To create a random pattern on the 25x25 grid click the Random Grid button</h4>
             </div>
